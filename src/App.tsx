@@ -58,7 +58,7 @@ async function handleAsk() {
     const data = await res.json();
     setAnswer(data.answer);
   } catch (err) {
-    setAnswer("Error contacting backend.");
+    setAnswer("Error contacting backend " + `${err}`);
   }
 }
 
