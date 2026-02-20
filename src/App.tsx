@@ -12,7 +12,7 @@ function App() {
     console.log("Effect running: fetching documents...");
 
     try {
-      const res = await fetch(`{API_URL}/api/documents`);
+      const res = await fetch(`${API_URL}/api/documents`);
       console.log("Fetch response:", res);
 
       const data = await res.json();
@@ -46,7 +46,7 @@ async function handleAsk() {
   setAnswer("Thinking...");
 
   try {
-    const res = await fetch(`{API_URL}/api/ask`, {
+    const res = await fetch(`${API_URL}/api/ask`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -70,7 +70,7 @@ async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
   formData.append("file", file);
 
   try {
-    const res = await fetch("{API_URL}/api/upload", {
+    const res = await fetch(`${API_URL}/api/upload`, {
       method: "POST",
       body: formData,
     });
