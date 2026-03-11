@@ -8,7 +8,7 @@ interface DocumentInfo {
 interface DocumentsListProps {
   documents: DocumentInfo[];
   selectedId: string | null;
-  onSelect: (id: string) => void;
+  onSelect: (id: string | null) => void;
   onDelete: (id: string) => void;
 }
 

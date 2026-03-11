@@ -8,7 +8,7 @@ interface DocumentInfo {
 interface DocumentSidebarProps {
   documents: DocumentInfo[];
   selectedId: string | null;
-  onSelect: (id: string) => void;
+  onSelect: (id: string | null) => void;
   onUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onDelete: (id: string) => void;
 }

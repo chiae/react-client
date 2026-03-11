@@ -1,4 +1,8 @@
-export function TwoColumn({ left, right }) {
+interface TwoColumnProps {
+  left: React.ReactNode;
+  right: React.ReactNode;
+}
+export function TwoColumn({ left, right }: TwoColumnProps) {
   return (
     <div className="flex gap-6 items-start p-4">
       <aside className="w-80 shrink-0">

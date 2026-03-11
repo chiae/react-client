@@ -14,8 +14,6 @@ interface DocumentInfo {
 export default function DocumentDetailPage() {
   const { id } = useParams();
   const [doc, setDoc] = useState<DocumentInfo | null>(null);
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
 
   // Load the document metadata
   useEffect(() => {
@@ -29,22 +27,6 @@ export default function DocumentDetailPage() {
     }
     load();
   }, [id]);
-
-  // Ask a question about this document
-  const handleAsk = async () => {
-    if (!question.trim()) return;
-
-    try {
-      const res = await api.post("/ask", {
-        documentId: id,
-        question,
-      });
-
-      setAnswer(res.data.answer);
-    } catch (err) {
-      console.error("Ask failed", err);
-    }
-  };
 
   if (!doc) {
     return <div className="p-6">Loading...</div>;

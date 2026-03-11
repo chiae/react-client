@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import DocumentsList from "@/components/DocumentsList";
 import api from "@/api/axios-api";
 import { TwoColumn } from "@/layouts/TwoColumn";
 import QAPanel from "@/components/QAPanel";
