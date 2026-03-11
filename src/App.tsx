@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import DocumentsPage from "./pages/DocumentsPage";
 import DocumentDetailPage from "./pages/DocumentDetailPage";
 import ProfilePage from "./pages/ProfilePage";
+import RegisterPage from "./pages/RegisterPage";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <Routes>
         {/* Public */}
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
         {/* Protected + Shared Layout */}
         <Route
@@ -25,7 +27,6 @@ export default function App() {
           <Route path="/documents" element={<DocumentsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/documents/:id" element={<DocumentDetailPage />} />
-
           {/* Default → Documents */}
           <Route path="/" element={<DocumentsPage />} />
         </Route>

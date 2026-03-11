@@ -17,6 +17,7 @@ interface DocumentInfo {
 export default function DocumentsPage() {
   const [documents, setDocuments] = useState<DocumentInfo[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -42,17 +43,21 @@ export default function DocumentsPage() {
     formData.append("file", e.target.files[0]);
 
     try {
+      setIsUploading(true); // start spinner
+
       const res = await api.post("/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      // Refresh list from backend
       await loadDocuments();
 
       const newId = res.data.documentId;
+      setSelectedId(newId);
       navigate(`/documents/${newId}`);
     } catch (err) {
       console.error("Upload failed", err);
+    } finally {
+      setIsUploading(false); // stop spinner
     }
   };
 
@@ -81,6 +86,7 @@ export default function DocumentsPage() {
           onSelect={setSelectedId}
           onUpload={handleFileUpload}
           onDelete={handleFileDelete}
+          isUploading={isUploading}
         />
       }
       right={<QAPanel documentId={selectedId} />}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 interface DocumentInfo {
@@ -18,58 +19,91 @@ export default function DocumentsList({
   onSelect,
   onDelete,
 }: DocumentsListProps) {
+  const [pendingDelete, setPendingDelete] = useState<string | null>(null);
+
   return (
-    <ul className="space-y-1">
-      {documents.map((doc) => {
-        const isActive = selectedId === doc.id;
+    <>
+      <ul className="space-y-1">
+        {documents.map((doc) => {
+          const isActive = selectedId === doc.id;
 
-        return (
-          <li
-            key={doc.id}
-            onClick={() => {
-              if (selectedId === doc.id) {
-                onSelect(null); // deselect
-              } else {
-                onSelect(doc.id); // select
-              }
-            }}
-            className={[
-              "flex items-center justify-between gap-2 cursor-pointer rounded-md px-3 py-2 text-sm transition-colors",
-              isActive
-                ? "bg-primary text-primary-content"
-                : "hover:bg-base-200",
-            ].join(" ")}
-          >
-            {/* LEFT: filename */}
-            <span className="flex-1 truncate">{doc.fileName}</span>
+          return (
+            <li
+              key={doc.id}
+              onClick={() => {
+                if (selectedId === doc.id) {
+                  onSelect(null);
+                } else {
+                  onSelect(doc.id);
+                }
+              }}
+              className={[
+                "flex items-center justify-between gap-2 cursor-pointer rounded-md px-3 py-2 text-sm transition-colors",
+                isActive
+                  ? "bg-primary text-primary-content"
+                  : "hover:bg-base-200",
+              ].join(" ")}
+            >
+              {/* LEFT: filename */}
+              <span className="flex-1 truncate">{doc.fileName}</span>
 
-            {/* RIGHT: action icons */}
-            <div className="flex items-center gap-1">
-              {/* Navigate */}
-              <Link
-                to={`/documents/${doc.id}`}
-                onClick={(e) => e.stopPropagation()}
-                className="btn btn-ghost btn-xs"
-                title="Open document"
-              >
-                ➜
-              </Link>
+              {/* RIGHT: action icons */}
+              <div className="flex items-center gap-1">
+                {/* Navigate */}
+                <Link
+                  to={`/documents/${doc.id}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="btn btn-ghost btn-xs"
+                  title="Open document"
+                >
+                  ➜
+                </Link>
 
-              {/* Delete */}
+                {/* Delete */}
+                <button
+                  className="btn btn-ghost btn-xs text-error"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPendingDelete(doc.id);
+                  }}
+                  title="Delete document"
+                >
+                  ✕
+                </button>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+
+      {/* Delete Confirmation Modal */}
+      {pendingDelete && (
+        <dialog className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Delete Document?</h3>
+            <p className="py-4">
+              This action cannot be undone. Are you sure you want to delete this
+              document?
+            </p>
+
+            <div className="modal-action">
+              <button className="btn" onClick={() => setPendingDelete(null)}>
+                Cancel
+              </button>
+
               <button
-                className="btn btn-ghost btn-xs text-error"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete(doc.id);
+                className="btn btn-error"
+                onClick={() => {
+                  onDelete(pendingDelete);
+                  setPendingDelete(null);
                 }}
-                title="Delete document"
               >
-                ✕
+                Delete
               </button>
             </div>
-          </li>
-        );
-      })}
-    </ul>
+          </div>
+        </dialog>
+      )}
+    </>
   );
 }
